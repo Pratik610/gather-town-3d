@@ -6,49 +6,46 @@ import { useEffect, useState } from "react";
 
 const Scene = () => {
   const [socket, setSocket] = useState<null | WebSocket>(null);
-  const [users, setUsers] = useState(null);
+  const [users, setUsers] = useState<any>(null);
 
   useEffect(() => {
     const ws = new WebSocket("wss://gather-town-3d.onrender.com");
-  
+
     ws.onopen = () => {
       console.log("WebSocket connected");
       setSocket(ws);
     };
-  
+
     ws.onmessage = (message) => {
       const data = JSON.parse(message.data);
-  
+
       if (data.type === "update-users-state") {
-        setUsers((prevUsers) => {
+        setUsers((prevUsers:any) => {
           const areEqual =
             JSON.stringify(prevUsers) === JSON.stringify(data.players);
           return areEqual ? prevUsers : data.players;
         });
       }
     };
-  
+
     ws.onerror = (error) => {
       console.error("WebSocket error:", error);
     };
-  
+
     ws.onclose = () => {
       console.log("WebSocket closed");
       setSocket(null);
     };
-  
+
     return () => {
       console.log("Cleaning up WebSocket");
       ws.close();
     };
   }, []);
-  
 
-  
   return (
     <>
       <CameraControls
-        fov={21}
         makeDefault={true}
 
         // maxPolarAngle={1.35}

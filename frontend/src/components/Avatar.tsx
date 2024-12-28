@@ -1,10 +1,10 @@
 import * as THREE from "three";
 
 import { useLoader, useFrame } from "@react-three/fiber";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTFLoader } from 'three-stdlib';
 import { useEffect } from "react";
 
-const Avatar = ({ socket }) => {
+const Avatar:React.FC<any> = ({ socket }) => {
   const avatar = useLoader(GLTFLoader, `./avatar.glb`);
   
 
@@ -61,7 +61,7 @@ const Avatar = ({ socket }) => {
     idleAction.play();
     let keysPressed: any = {};
 
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e:any) => {
       keysPressed[String(e.key).toLowerCase()] = true;
 
       //  Forward
@@ -184,7 +184,7 @@ const Avatar = ({ socket }) => {
       }
     };
 
-    const handleKeyUp = (e) => {
+    const handleKeyUp = (e:any) => {
       delete keysPressed[String(e.key).toLowerCase()];
       if (activeAction !== idleAction) {
         if (Object.keys(keysPressed).length === 0) {

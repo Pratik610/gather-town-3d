@@ -1,19 +1,15 @@
 import * as THREE from "three";
-import React, { useState } from "react";
-import { useLoader, useThree, useFrame } from "@react-three/fiber";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { useEffect, useMemo, useRef } from "react";
+import React from "react";
+import { useLoader, useFrame } from "@react-three/fiber";
+import { GLTFLoader } from "three-stdlib";
+import { useEffect, useRef } from "react";
 
-const TeammateAvatar = React.memo(({ player }) => {
+const TeammateAvatar: React.FC<any> = React.memo(({ player }) => {
   const avatar = useLoader(GLTFLoader, `./avatar.glb?${player.id}`);
 
-  const [currentAnimation, setcurrentAnimation] = useState<any>();
-
-  const mixerRef = useRef<any | null>(null); // Persistent AnimationMixer
-  const clockRef = useRef(new THREE.Clock()); // Persistent clock for delta time
-  const currentAnimationRef = useRef<any| null>(null); // Track current animation
-
-
+  const mixerRef = useRef<any | null>(null); 
+  const clockRef = useRef(new THREE.Clock()); 
+  const currentAnimationRef = useRef<any | null>(null); 
 
   useEffect(() => {
     if (avatar) {
@@ -86,7 +82,6 @@ const TeammateAvatar = React.memo(({ player }) => {
       mixerRef.current?.update(delta);
     }
   });
-
 
   return avatar && <primitive object={avatar.scene} scale={[0.1, 0.1, 0.1]} />;
 });
