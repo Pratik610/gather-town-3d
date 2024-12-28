@@ -9,7 +9,7 @@ const Scene = () => {
   const [users, setUsers] = useState(null);
 
   useEffect(() => {
-    const ws = new WebSocket("wss://553a-2401-4900-1c7e-9a50-dcc3-224f-c20-b92b.ngrok-free.app ");
+    const ws = new WebSocket("wss://gather-town-3d.onrender.com");
   
     ws.onopen = () => {
       console.log("WebSocket connected");
