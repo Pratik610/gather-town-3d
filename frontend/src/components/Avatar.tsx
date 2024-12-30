@@ -5,7 +5,7 @@ import { GLTFLoader } from 'three-stdlib';
 import { useEffect } from "react";
 
 const Avatar:React.FC<any> = ({ socket }) => {
-  const avatar = useLoader(GLTFLoader, `./avatar.glb`);
+  const avatar = useLoader(GLTFLoader, `../avatar.glb`);
   
 
   useFrame((state) => {
@@ -343,7 +343,7 @@ const Avatar:React.FC<any> = ({ socket }) => {
       document.removeEventListener("keyup", handleKeyUp);
       mixer.stopAllAction();
     };
-  }, [avatar]);
+  }, [avatar,socket]);
 
   return avatar && <primitive object={avatar.scene} scale={[0.1, 0.1, 0.1]} />;
 };

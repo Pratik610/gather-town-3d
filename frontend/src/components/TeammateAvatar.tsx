@@ -5,7 +5,7 @@ import { GLTFLoader } from "three-stdlib";
 import { useEffect, useRef } from "react";
 
 const TeammateAvatar: React.FC<any> = React.memo(({ player }) => {
-  const avatar = useLoader(GLTFLoader, `./avatar.glb?${player.id}`);
+  const avatar = useLoader(GLTFLoader, `../avatar.glb?${player.id}`);
 
   const mixerRef = useRef<any | null>(null); 
   const clockRef = useRef(new THREE.Clock()); 

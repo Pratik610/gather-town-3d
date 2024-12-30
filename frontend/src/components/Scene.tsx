@@ -1,7 +1,7 @@
 import { Center, Environment, Grid } from "@react-three/drei";
 import { CameraControls } from "@react-three/drei";
-import Avatar from "./components/Avatar";
-import TeammateAvatar from "./components/TeammateAvatar";
+import Avatar from "./Avatar";
+import TeammateAvatar from "./TeammateAvatar";
 import { useEffect, useState } from "react";
 
 const Scene = () => {

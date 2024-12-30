@@ -1,13 +1,53 @@
 import express from "express";
 import { WebSocketServer, WebSocket } from "ws";
 import { v4 as uuidv4 } from "uuid";
+import dotenv from "dotenv";
+import userRoutes from "./routes/userRoutes";
+import workspaceRoutes from "./routes/workspaceRoutes";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+
+import session from "express-session";
+import { notFound, errorHandler } from "./middlewares/errorMiddleware";
+dotenv.config();
 
 const app = express();
-const httpServer = app.listen(8080);
+
+app.use(cookieParser());
+app.use(express.json());
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "your-session-secret", // Secret for signing the session ID cookie
+    resave: false, // Don't resave session if not modified
+    saveUninitialized: false, // Don't save an uninitialized session
+    cookie: {
+      httpOnly: true, // Ensures cookies are not accessible via JavaScript
+      secure: process.env.NODE_ENV === "production", // Only send cookies over HTTPS in production
+      sameSite: "none", // Allow cross-origin requests with cookies
+    },
+  })
+);
+
+app.use(
+  cors({
+    credentials: true,
+    origin: "*",
+  })
+);
+
+app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/workspace", workspaceRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
+
+const httpServer = app.listen(process.env.PORT, () =>
+  console.log("Server Running on PORT:", process.env.PORT)
+);
 
 const wss = new WebSocketServer({ server: httpServer });
 
-// Store WebSocket instances and associated client data
 const clients = new Map<string, { socket: WebSocket; data: Partial<Data> }>();
 
 type Data = {
@@ -20,7 +60,7 @@ type Data = {
 
 wss.on("connection", (socket) => {
   const id = uuidv4(); // Unique client ID
-  clients.set(id, { socket, data: {} }); // Add client with empty initial data
+  clients.set(id, { socket, data: {} });
   console.log(`Client connected: ${id}`);
 
   socket.on("error", console.error);
@@ -67,6 +107,6 @@ wss.on("connection", (socket) => {
 
   socket.on("close", () => {
     console.log(`Client disconnected: ${id}`);
-    clients.delete(id); // Remove the client on disconnect
+    clients.delete(id);
   });
 });

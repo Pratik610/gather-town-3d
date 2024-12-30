@@ -1,18 +1,18 @@
-import * as THREE from "three";
-import { Canvas } from "@react-three/fiber";
-import Scene from "./Scene";
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginScreen from "./screens/LoginScreen";
+import DashboardScreen from "./screens/DashboardScreen";
+import PlaygroundScreen from "./screens/PlaygroundScreen";
+import "./index.css";
 function App() {
   return (
-    <div style={{ height: "100dvh" }}>
-      <Canvas
-        shadows={{ type: THREE.PCFSoftShadowMap }}
-        style={{ minHeight: "100%", zIndex: "9" }}
-        camera={{ fov: 21, position: [0, 0, 3.4] }}
-      >
-        <Scene />
-      </Canvas>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" Component={LoginScreen} />
+        <Route path="/" Component={DashboardScreen} index />
+        <Route path="/playground/:id" Component={PlaygroundScreen} index />
+
+      </Routes>
+    </Router>
   );
 }
 
