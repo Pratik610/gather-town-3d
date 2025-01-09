@@ -1,1 +1,1 @@
-{"root":["./src/server.ts"],"version":"5.6.3"}
+{"root":["./src/server.ts","./src/controllers/usercontroller.ts","./src/controllers/workspacecontroller.ts","./src/middlewares/authmiddleware.ts","./src/middlewares/errormiddleware.ts","./src/routes/userroutes.ts","./src/routes/workspaceroutes.ts","./src/util/prisma.ts","./src/util/token.ts"],"version":"5.6.3"}

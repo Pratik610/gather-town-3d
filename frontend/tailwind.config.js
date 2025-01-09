@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
   	extend: {
+
+		fontFamily: {
+			geist: ['Geist', 'sans-serif'], // Add Geist font
+		  },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

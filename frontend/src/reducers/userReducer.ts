@@ -11,8 +11,8 @@ import {
 // Define types for the state
 interface UserState {
   loading?: boolean;
-  login?: string;
-  error?: string;
+  login?: string | object;
+  error?: string | object;
   details?: object;
 }
 

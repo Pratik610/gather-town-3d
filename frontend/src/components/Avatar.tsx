@@ -1,12 +1,17 @@
 import * as THREE from "three";
-
+import { useParams } from "react-router-dom";
 import { useLoader, useFrame } from "@react-three/fiber";
-import { GLTFLoader } from 'three-stdlib';
+import { GLTFLoader } from "three-stdlib";
 import { useEffect } from "react";
+import { Html } from "@react-three/drei";
+import { useState } from "react";
 
-const Avatar:React.FC<any> = ({ socket }) => {
+const Avatar: React.FC<any> = ({ socket, details }) => {
   const avatar = useLoader(GLTFLoader, `../avatar.glb`);
-  
+
+  const [nameTagPosition, setNameTagPosition] = useState<[number, number, number]>([0, 0, 0])
+
+  const { id } = useParams();
 
   useFrame((state) => {
     const avatarPosition = avatar.scene.position; // Assuming `avatar.scene` is a loaded 3D model
@@ -20,8 +25,14 @@ const Avatar:React.FC<any> = ({ socket }) => {
     );
     state.camera.lookAt(avatar.scene.position);
 
-   
+    setNameTagPosition([
+      avatarPosition.x - 0.03,
+      0.22,
+      avatarPosition.z,
+    ]);
   });
+
+
 
   useEffect(() => {
     if (!avatar || !avatar.scene || !avatar.animations) return;
@@ -61,7 +72,7 @@ const Avatar:React.FC<any> = ({ socket }) => {
     idleAction.play();
     let keysPressed: any = {};
 
-    const handleKeyDown = (e:any) => {
+    const handleKeyDown = (e: any) => {
       keysPressed[String(e.key).toLowerCase()] = true;
 
       //  Forward
@@ -184,11 +195,11 @@ const Avatar:React.FC<any> = ({ socket }) => {
       }
     };
 
-    const handleKeyUp = (e:any) => {
+    const handleKeyUp = (e: any) => {
       delete keysPressed[String(e.key).toLowerCase()];
       if (activeAction !== idleAction) {
         if (Object.keys(keysPressed).length === 0) {
-          running = false
+          running = false;
           activeAction.stop();
           activeAction = idleAction;
           idleAction.play();
@@ -196,7 +207,7 @@ const Avatar:React.FC<any> = ({ socket }) => {
           movingBackward = false;
           movingLeft = false;
           movingRight = false;
-         
+
           return;
         }
 
@@ -204,7 +215,7 @@ const Avatar:React.FC<any> = ({ socket }) => {
           activeAction.stop();
           activeAction = idleAction;
           idleAction.play();
-          running = false
+          running = false;
           movingForward = false;
 
           movingBackward = false;
@@ -228,7 +239,6 @@ const Avatar:React.FC<any> = ({ socket }) => {
 
             walkAction.play();
             movingForward = true;
-           
           }
         }
 
@@ -247,7 +257,6 @@ const Avatar:React.FC<any> = ({ socket }) => {
             walkAction.play();
 
             movingBackward = true;
-            
           }
         }
 
@@ -265,8 +274,6 @@ const Avatar:React.FC<any> = ({ socket }) => {
             avatar.scene.rotation.set(0, Math.PI / 2, 0);
             walkAction.play();
             running = false;
-
-        
           }
         }
 
@@ -275,7 +282,6 @@ const Avatar:React.FC<any> = ({ socket }) => {
         }
 
         if (keysPressed["d"] && !keysPressed["shift"]) {
-          
           if (activeAction !== walkAction) {
             movingRight = true;
             activeAction.stop();
@@ -283,8 +289,6 @@ const Avatar:React.FC<any> = ({ socket }) => {
             avatar.scene.rotation.set(0, Math.PI / -2, 0);
             walkAction.play();
             running = false;
-
-         
           }
         }
       }
@@ -323,6 +327,7 @@ const Avatar:React.FC<any> = ({ socket }) => {
       }
       const avatarPosition = avatar.scene.position;
       const data = {
+        workspaceId: id,
         type: "update-movements",
         x: avatarPosition.x,
         y: avatarPosition.y,
@@ -331,7 +336,7 @@ const Avatar:React.FC<any> = ({ socket }) => {
         movingBackward,
         movingLeft,
         movingRight,
-        running
+        running,
       };
       socket.send(JSON.stringify(data));
     };
@@ -343,9 +348,21 @@ const Avatar:React.FC<any> = ({ socket }) => {
       document.removeEventListener("keyup", handleKeyUp);
       mixer.stopAllAction();
     };
-  }, [avatar,socket]);
+  }, [avatar, socket]);
 
-  return avatar && <primitive object={avatar.scene} scale={[0.1, 0.1, 0.1]} />;
+  return (
+    avatar && (
+      <group>
+        <Html position={nameTagPosition} style={{ pointerEvents: "none" }}>
+          <div className="">
+            <p>{details.name}</p>
+          </div>
+        </Html>
+
+        <primitive object={avatar.scene} scale={[0.1, 0.1, 0.1]} />
+      </group>
+    )
+  );
 };
 
 export default Avatar;

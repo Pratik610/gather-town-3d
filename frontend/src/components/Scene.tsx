@@ -1,65 +1,49 @@
 import { Center, Environment, Grid } from "@react-three/drei";
-import { CameraControls } from "@react-three/drei";
 import Avatar from "./Avatar";
 import TeammateAvatar from "./TeammateAvatar";
-import { useEffect, useState } from "react";
+import { useEffect, } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import WebSocketManager from "@/WebSocketManager";
+const Scene = ({ users, setUsers }:any) => {
+  const navigate = useNavigate();
 
-const Scene = () => {
-  const [socket, setSocket] = useState<null | WebSocket>(null);
-  const [users, setUsers] = useState<any>(null);
+  const userDetails = useSelector((state: any) => state.userDetails);
+  const { details,  } = userDetails;
+
+  const wsManager = WebSocketManager.getInstance();
+  const socket = wsManager.getSocket();
 
   useEffect(() => {
-    const ws = new WebSocket("wss://gather-town-3d.onrender.com");
+    if (!socket) {
+      navigate(`/`);
+    }
+  }, [navigate, socket]);
 
-    ws.onopen = () => {
-      console.log("WebSocket connected");
-      setSocket(ws);
-    };
+  useEffect(() => {
+    if (socket) {
+      socket.onmessage = (message) => {
+        const data = JSON.parse(message.data);
 
-    ws.onmessage = (message) => {
-      const data = JSON.parse(message.data);
-
-      if (data.type === "update-users-state") {
-        setUsers((prevUsers:any) => {
-          const areEqual =
-            JSON.stringify(prevUsers) === JSON.stringify(data.players);
-          return areEqual ? prevUsers : data.players;
-        });
-      }
-    };
-
-    ws.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    ws.onclose = () => {
-      console.log("WebSocket closed");
-      setSocket(null);
-    };
-
-    return () => {
-      console.log("Cleaning up WebSocket");
-      ws.close();
-    };
-  }, []);
+        console.log(data);
+        if (data.type === "update-users-state") {
+          setUsers((prevUsers: any) => {
+            const areEqual =
+              JSON.stringify(prevUsers) === JSON.stringify(data.players);
+            return areEqual ? prevUsers : data.players;
+          });
+        }
+      };
+    }
+  }, [socket]);
 
   return (
     <>
-      <CameraControls
-        makeDefault={true}
-
-        // maxPolarAngle={1.35}
-        // minPolarAngle={1.35}
-        // minDistance={0.5} // Set the minimum zoom distance
-        // maxDistance={6.4} // Set the maximum zoom distance
-
-        // }}
-      />
       <Environment preset="city" />
       <Center>
         {socket && (
           <>
-            <Avatar socket={socket} />
+            <Avatar socket={socket} details={details} />
 
             {users &&
               users.map((player: any) => (

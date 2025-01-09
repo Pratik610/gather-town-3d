@@ -7,19 +7,20 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { useDispatch } from "react-redux";
 import { getUserDetails } from "../actions/userActions";
 import { useSelector } from "react-redux";
 import { AppDispatch } from "@/store";
 import { useNavigate } from "react-router-dom";
-import { getAllWorkSpace, createWorkSpace } from "@/actions/workspaceAction";
+import { getAllWorkSpace } from "@/actions/workspaceAction";
 import Loader from "@/components/Loader";
+import WebSocketManager from "@/WebSocketManager";
 import CreateWorkspacePopup from "@/components/CreateWorkspacePopup";
 
 const DashboardScreen = () => {
   const dispatch: AppDispatch = useDispatch();
-
+  const wsManager = WebSocketManager.getInstance();
   const navigate = useNavigate();
 
   const userDetails = useSelector((state: any) => state.userDetails);
@@ -28,12 +29,27 @@ const DashboardScreen = () => {
   const workspaceDetails = useSelector((state: any) => state.workspaceDetails);
   const { workspaces, loading } = workspaceDetails;
 
+  const socket = wsManager.getSocket();
+
   useEffect(() => {
     if (!details) {
       dispatch(getUserDetails());
       dispatch(getAllWorkSpace());
     }
   }, [details, dispatch]);
+
+  useEffect(() => {
+    wsManager.connect("ws://localhost:5000");
+  }, [wsManager]);
+
+  useEffect(() => {
+    if (socket) {
+      socket!.onmessage = (message) => {
+        const data = JSON.parse(message.data);
+        navigate(`/playground/${data.workspaceId}`);
+      };
+    }
+  }, [socket,navigate]);
 
   useEffect(() => {
     if (error) {
@@ -49,8 +65,20 @@ const DashboardScreen = () => {
     );
   }
 
+  const joinWorkSpace = (workspaceId: string) => {
+    if (socket?.readyState === WebSocket.OPEN) {
+      const data = {
+        type: "join-workspace",
+        workspaceId,
+        userDetails: details,
+      };
+
+      socket.send(JSON.stringify(data));
+    }
+  };
+
   return (
-    <SidebarProvider>
+    <SidebarProvider className="font-geist">
       <AppSidebar active={"Dashboard"} />
       <SidebarInset>
         <header className="flex justify-between items-center h-16 shrink-0  gap-2 border-b px-4">
@@ -80,7 +108,7 @@ const DashboardScreen = () => {
             <CreateWorkspacePopup />
           </div>
         ) : (
-          <div className="p-5">
+          <div className="container p-4 mx-auto mt-5">
             <div className="flex justify-between pb-4 border-b  border-zinc-800 pe-4">
               <h1 className="text-2xl font-medium ">My Workspaces </h1>
               <CreateWorkspacePopup />
@@ -89,8 +117,12 @@ const DashboardScreen = () => {
             <div className="grid mt-4 lg:grid-cols-3 xl:grid-cols-4 sm:grid-cols-1 md:grid-cols-2 gap-4  ">
               {workspaces &&
                 workspaces.length > 0 &&
-                workspaces.map((item) => (
-                  <div className="bg-zinc-800 rounded-lg  min-h-72 flex items-center justify-center">
+                workspaces.map((item: any) => (
+                  <div
+                  key={item.workspace.id}
+                    onClick={() => joinWorkSpace(item.workspace.id)}
+                    className="bg-gradient-to-r from-zinc-900 to-zinc-800 rounded-lg  aspect-video flex items-center justify-center"
+                  >
                     {item.workspace.name}
                   </div>
                 ))}

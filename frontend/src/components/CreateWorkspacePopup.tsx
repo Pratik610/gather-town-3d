@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Dialog,
   DialogContent,
@@ -7,15 +6,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
 import { createWorkSpace, getAllWorkSpace } from "@/actions/workspaceAction";
-
 import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "@/store";
+
 const CreateWorkspacePopup = () => {
   const dispatch: AppDispatch = useDispatch();
 
