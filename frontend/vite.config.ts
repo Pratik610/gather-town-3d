@@ -17,10 +17,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api': {
-        target: 'http://localhost:5000', // Your backend API server
-        changeOrigin: true,              // Change origin for the request
-        secure: false,                  // Allow HTTP (not HTTPS)
+      "/api": {
+        target: process.env.VITE_API_URL || "http://localhost:5000",
+        changeOrigin: true, // Change origin for the request
+        secure: false, // Allow HTTP (not HTTPS)
       },
     },
   },
