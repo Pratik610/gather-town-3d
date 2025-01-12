@@ -76,5 +76,5 @@ export const userLogin = asyncHandler(async (req: any, res: any) => {
 
 export const getUserDetails = asyncHandler(async (req: any, res: any) => {
  
-  return res.status(200).json(req.session.user);
+  return res.status(200).json(req.user);
 });

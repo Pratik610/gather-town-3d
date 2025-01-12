@@ -16,18 +16,7 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "your-session-secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
-    },
-  })
-);
+
 
 app.use(
   cors({
@@ -150,10 +139,10 @@ function handleUpdateMovements(socketId: string, userMessage: any) {
 
       teammate!.socket.send(
         JSON.stringify({
-          type: "update-users-state",
+          type: "update-users-`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             state",
           players,
         })
-      );
+      );  
     }
   });
 }

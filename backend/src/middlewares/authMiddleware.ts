@@ -23,7 +23,7 @@ const protect = asyncHandler(
           },
         });
 
-        req.session.user = data;
+        req.user = data;
 
         next();
       } catch (error) {

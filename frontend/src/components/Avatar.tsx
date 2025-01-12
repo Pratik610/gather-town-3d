@@ -26,7 +26,7 @@ const Avatar: React.FC<any> = ({ socket, details }) => {
     state.camera.lookAt(avatar.scene.position);
 
     setNameTagPosition([
-      avatarPosition.x - 0.03,
+      avatarPosition.x - 0.05,
       0.22,
       avatarPosition.z,
     ]);
@@ -354,8 +354,8 @@ const Avatar: React.FC<any> = ({ socket, details }) => {
     avatar && (
       <group>
         <Html position={nameTagPosition} style={{ pointerEvents: "none" }}>
-          <div className="">
-            <p>{details.name}</p>
+          <div className="w-28  " >
+            <p className="text-center whitespace-nowrap overflow-hidden  text-ellipsis" >{details.name}</p>
           </div>
         </Html>
 

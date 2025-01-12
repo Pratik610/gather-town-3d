@@ -7,12 +7,12 @@ export const createWorkSpace = asyncHandler(async (req: any, res: any) => {
 
     await prisma.workspace.create({
       data: {
-        adminId: req.session.user.id,
+        adminId: req.user.id,
         name,
         description,
         Workspace_Users: {
           create: {
-            userId: req.session.user.id,
+            userId: req.user.id,
           },
         },
       },
@@ -28,7 +28,7 @@ export const getAllWorkSpace = asyncHandler(async (req: any, res: any) => {
   try {
     const data = await prisma.user.findUnique({
       where: {
-        id: req.session.user.id,
+        id: req.user.id,
       },
       select: {
         Workspace_Users: {
