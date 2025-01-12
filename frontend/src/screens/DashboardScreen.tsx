@@ -7,7 +7,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { useEffect} from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getUserDetails } from "../actions/userActions";
 import { useSelector } from "react-redux";
@@ -39,7 +39,7 @@ const DashboardScreen = () => {
   }, [details, dispatch]);
 
   useEffect(() => {
-    wsManager.connect("ws://localhost:5000");
+    wsManager.connect(import.meta.env.VITE_WS_URL!);
   }, [wsManager]);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const DashboardScreen = () => {
         navigate(`/playground/${data.workspaceId}`);
       };
     }
-  }, [socket,navigate]);
+  }, [socket, navigate]);
 
   useEffect(() => {
     if (error) {
@@ -119,7 +119,7 @@ const DashboardScreen = () => {
                 workspaces.length > 0 &&
                 workspaces.map((item: any) => (
                   <div
-                  key={item.workspace.id}
+                    key={item.workspace.id}
                     onClick={() => joinWorkSpace(item.workspace.id)}
                     className="bg-gradient-to-r from-zinc-900 to-zinc-800 rounded-lg  aspect-video flex items-center justify-center"
                   >

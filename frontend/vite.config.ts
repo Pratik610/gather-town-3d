@@ -21,7 +21,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: process.env.VITE_API_URL || "http://localhost:5000",
+        target: "https://gather-town-3d.onrender.com",
         changeOrigin: true, // Change origin for the request
         secure: false, // Allow HTTP (not HTTPS)
       },
