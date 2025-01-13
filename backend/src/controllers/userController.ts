@@ -44,7 +44,7 @@ export const userLogin = asyncHandler(async (req: any, res: any) => {
 
           res.cookie("token", createToken(createNewUser!.id), {
             httpOnly: true,
-            secure:true,
+            secure:false,
             sameSite: "None",
             expires: new Date(Date.now() + (30*24*3600000))
             
