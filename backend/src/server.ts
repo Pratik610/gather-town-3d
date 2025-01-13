@@ -19,11 +19,15 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:5173","http://localhost:4173","https://gather-town-3d.vercel.app"],
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:4173",
+      "https://gather-town-3d.vercel.app",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Explicitly allow methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
   })
 );
-
 
 app.options("*", (req, res) => {
   res.sendStatus(200); // Respond with 200 to OPTIONS preflight requests
