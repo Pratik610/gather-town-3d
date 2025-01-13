@@ -20,6 +20,7 @@ app.use(
   cors({
     credentials: true,
     origin: ["http://localhost:5173","http://localhost:4173","https://gather-town-3d.vercel.app"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Explicitly allow methods
   })
 );
 
