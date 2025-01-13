@@ -41,17 +41,19 @@ export const userLogin = asyncHandler(async (req: any, res: any) => {
             },
           });
 
-
+          res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+          res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
           res.cookie("token", createToken(createNewUser!.id), {
             httpOnly: true,
-            secure:false,
+            secure: false,
             sameSite: "None",
-            expires: new Date(Date.now() + (30*24*3600000))
-            
+            expires: new Date(Date.now() + 30 * 24 * 3600000),
           });
 
           return res.status(201).json("Login Successfull");
         } else {
+          res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+          res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
           res.cookie("token", createToken(checkUserExists!.id));
 
           return res.status(200).json("Login Successfull");
@@ -75,6 +77,5 @@ export const userLogin = asyncHandler(async (req: any, res: any) => {
 });
 
 export const getUserDetails = asyncHandler(async (req: any, res: any) => {
- 
   return res.status(200).json(req.user);
 });
