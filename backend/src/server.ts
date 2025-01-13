@@ -24,6 +24,11 @@ app.use(
   })
 );
 
+
+app.options("*", (req, res) => {
+  res.sendStatus(200); // Respond with 200 to OPTIONS preflight requests
+});
+
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/workspace", workspaceRoutes);
 
