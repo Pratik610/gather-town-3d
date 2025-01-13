@@ -19,14 +19,16 @@ export const googleLogin =
         headers: {
           "Content-Type": "application/json",
         },
+       
       };
       // Replace with actual API call
       const { data } = await axios.post(
-        `/api/v1/user/login`,
+        `${import.meta.env.VITE_API_URL}/api/v1/user/login`,
         {
           access_token,
           loginType,
         },
+
         config
       );
 
@@ -54,9 +56,13 @@ export const getUserDetails = () => async (dispatch: Dispatch) => {
       headers: {
         "Content-Type": "application/json",
       },
+      
     };
     // Replace with actual API call
-    const { data } = await axios.get(`/api/v1/user/`, config);
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/v1/user/`,
+      config
+    );
 
     dispatch({
       type: USER_DETAILS_SUCCESS,

@@ -20,10 +20,11 @@ export const createWorkSpace =
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials: true,
       };
 
       const { data } = await axios.post(
-        `/api/v1/workspace/create`,
+        `${import.meta.env.VITE_API_URL}/api/v1/workspace/create`,
         {
           name,
           description,
@@ -49,7 +50,17 @@ export const getAllWorkSpace = () => async (dispatch: Dispatch) => {
       type: GET_ALL_WORKSPACE_REQUEST,
     });
 
-    const { data } = await axios.get(`/api/v1/workspace`);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    };
+
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/v1/workspace`,
+      config
+    );
 
     dispatch({
       type: GET_ALL_WORKSPACE_SUCCESS,
