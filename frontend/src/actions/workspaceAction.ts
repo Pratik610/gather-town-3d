@@ -8,10 +8,16 @@ import {
   GET_ALL_WORKSPACE_SUCCESS,
 } from "../constants/workspaceConstants";
 import { Dispatch } from "redux";
+import { RootState } from "@/store";
 
 export const createWorkSpace =
-  (name: string, description: string) => async (dispatch: Dispatch) => {
+  (name: string, description: string) =>
+  async (dispatch: Dispatch, getState: () => RootState) => {
     try {
+      const {
+        userAuth: { token },
+      } = getState();
+
       dispatch({
         type: WORKSPACE_CREATE_REQUEST,
       });
@@ -19,8 +25,8 @@ export const createWorkSpace =
       const config = {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
       };
 
       const { data } = await axios.post(
@@ -44,8 +50,15 @@ export const createWorkSpace =
     }
   };
 
-export const getAllWorkSpace = () => async (dispatch: Dispatch) => {
+export const getAllWorkSpace = () => async (dispatch: Dispatch,getState: () => RootState) => {
   try {
+
+
+    const {
+      userAuth: { token },
+    } = getState();
+
+
     dispatch({
       type: GET_ALL_WORKSPACE_REQUEST,
     });
@@ -53,8 +66,8 @@ export const getAllWorkSpace = () => async (dispatch: Dispatch) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      withCredentials: true,
     };
 
     const { data } = await axios.get(

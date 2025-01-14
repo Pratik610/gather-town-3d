@@ -4,7 +4,6 @@ import Scene from "../components/Scene";
 import { useState } from "react";
 
 const PlaygroundScreen = () => {
-
   const [users, setUsers] = useState<any>(null);
   return (
     <div style={{ height: "100dvh" }} className=" grid grid-cols-10">
@@ -19,9 +18,7 @@ const PlaygroundScreen = () => {
         </Canvas>
       </div>
       <div className="col-span-2 bg-gradient-to-r from-zinc-900 to-zinc-800">
-          <div>
-            
-          </div>
+        <div></div>
       </div>
     </div>
   );

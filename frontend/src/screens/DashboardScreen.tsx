@@ -32,11 +32,11 @@ const DashboardScreen = () => {
   const socket = wsManager.getSocket();
 
   useEffect(() => {
-    if (!details) {
+  
       dispatch(getUserDetails());
       dispatch(getAllWorkSpace());
-    }
-  }, [details, dispatch]);
+    
+  }, [dispatch]);
 
   useEffect(() => {
     wsManager.connect(import.meta.env.VITE_WS_URL!);

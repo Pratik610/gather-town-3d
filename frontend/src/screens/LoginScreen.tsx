@@ -2,11 +2,11 @@ import { LoginForm } from "@/components/login-form";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-
+import { RootState } from "@/store";
 const LoginScreen = () => {
   const navigate = useNavigate();
 
-  const userLogin = useSelector((state: any) => state.userLogin);
+  const userLogin = useSelector((state: RootState) => state.userLogin);
   const { login } = userLogin;
 
   useEffect(() => {
@@ -19,13 +19,8 @@ const LoginScreen = () => {
     <div className="bg-black">
       <div className="flex container border mx-auto  font-geist min-h-svh  items-center justify-center  bg-black p-6 md:p-10">
         <div className="absolute border top-0 left-0 p-5 w-full">
-        <img
-          src="./logo/White-Logo-Face.png"
-          className="w-12 ms-5 "
-          alt=""
-        />
+          <img src="./logo/White-Logo-Face.png" className="w-12 ms-5 " alt="" />
         </div>
-        
 
         <div className="xl:w-8/12 ">
           <p
@@ -42,9 +37,7 @@ const LoginScreen = () => {
             <LoginForm />
           </div>
         </div>
-        <div className="absolute border bottom-0 left-0 p-10 w-full">
-        
-        </div>
+        <div className="absolute border bottom-0 left-0 p-10 w-full"></div>
       </div>
     </div>
   );

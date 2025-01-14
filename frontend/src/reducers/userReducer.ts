@@ -6,20 +6,43 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
+  USER_AUTH_SET,
+  USER_AUTH_RESET,
 } from "@/constants/userConstants";
 
 // Define types for the state
 interface UserState {
   loading?: boolean;
   login?: string | object;
+  token?: string | object | null;
   error?: string | object;
-  details?: object;
+  details?: object | string;
 }
 
 interface Action {
   type: string;
-  payload?: object;
+  payload?: object | string;
 }
+
+const initialState: { token: string | null } = {
+  token: localStorage.getItem("token"),
+};
+
+export const userAuthReducer = (
+  state = initialState,
+  action: Action
+): { token: string | null } => {
+  switch (action.type) {
+    case USER_AUTH_SET:
+      return { token: action.payload as string }; // Ensure payload is a string
+
+    case USER_AUTH_RESET:
+      return { token: null };
+
+    default:
+      return state;
+  }
+};
 
 export const userLoginReducer = (state = {}, action: Action): UserState => {
   switch (action.type) {

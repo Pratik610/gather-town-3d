@@ -4,10 +4,16 @@ import prisma from "../util/prisma";
 import asyncHandler from "express-async-handler";
 const protect = asyncHandler(
   async (req: any, res: Response, next: NextFunction): Promise<any> => {
-    if (req.cookies.token) {
+ 
+
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
       try {
+        const token = req.headers.authorization.split(" ")[1];
         const decoded = jwt.verify(
-          req.cookies.token!,
+          token!,
           process.env.JWT_SECRET!
         ) as JwtPayload;
 

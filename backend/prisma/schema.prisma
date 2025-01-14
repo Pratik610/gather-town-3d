@@ -14,7 +14,6 @@ model User {
   password        String?
   googleId        String?
   profilePhoto    String?
-  loginType       String?
   createdAt       DateTime          @default(now())
   Workspace_Users Workspace_Users[]
   Workspace       Workspace[]
