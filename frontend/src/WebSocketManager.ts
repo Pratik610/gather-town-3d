@@ -13,6 +13,9 @@ class WebSocketManager {
     }
   
     public connect(url: string): void {
+
+      console.log("WS Server",url)
+
       if (!this.socket || this.socket.readyState === WebSocket.CLOSED) {
         this.socket = new WebSocket(url);
   
