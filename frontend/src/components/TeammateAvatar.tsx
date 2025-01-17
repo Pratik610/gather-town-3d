@@ -2,14 +2,16 @@ import * as THREE from "three";
 import React from "react";
 import { useLoader, useFrame } from "@react-three/fiber";
 import { GLTFLoader } from "three-stdlib";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Html } from "@react-three/drei";
 
 const TeammateAvatar: React.FC<any> = React.memo(({ player }) => {
   const avatar = useLoader(GLTFLoader, `../avatar.glb?${player.id}`);
 
-  const mixerRef = useRef<any | null>(null); 
-  const clockRef = useRef(new THREE.Clock()); 
-  const currentAnimationRef = useRef<any | null>(null); 
+
+  const mixerRef = useRef<any | null>(null);
+  const clockRef = useRef(new THREE.Clock());
+  const currentAnimationRef = useRef<any | null>(null);
 
   useEffect(() => {
     if (avatar) {
@@ -83,6 +85,26 @@ const TeammateAvatar: React.FC<any> = React.memo(({ player }) => {
     }
   });
 
-  return avatar && <primitive object={avatar.scene} scale={[0.1, 0.1, 0.1]} />;
+  // return avatar && <primitive object={avatar.scene} scale={[0.1, 0.1, 0.1]} />;
+
+  return (
+    avatar &&
+    avatar && (
+      <group>
+        <Html
+          position={[player.x-0.05, 0.22, player.z]}
+          style={{ pointerEvents: "none" }}
+        >
+          <div className="w-28  ">
+            <p className="text-center whitespace-nowrap overflow-hidden  text-ellipsis">
+              {player.name}
+            </p>
+          </div>
+        </Html>
+
+        <primitive object={avatar.scene} scale={[0.1, 0.1, 0.1]} />
+      </group>
+    )
+  );
 });
 export default TeammateAvatar;

@@ -1,15 +1,15 @@
 import { Center, Environment, Grid } from "@react-three/drei";
 import Avatar from "./Avatar";
 import TeammateAvatar from "./TeammateAvatar";
-import { useEffect, } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import WebSocketManager from "@/WebSocketManager";
-const Scene = ({ users, setUsers }:any) => {
+const Scene = ({ users, setUsers }: any) => {
   const navigate = useNavigate();
 
   const userDetails = useSelector((state: any) => state.userDetails);
-  const { details,  } = userDetails;
+  const { details } = userDetails;
 
   const wsManager = WebSocketManager.getInstance();
   const socket = wsManager.getSocket();
@@ -25,8 +25,9 @@ const Scene = ({ users, setUsers }:any) => {
       socket.onmessage = (message) => {
         const data = JSON.parse(message.data);
 
-        console.log(data);
-        if (data.type === "update-users-state") {
+        if (data.type === "update-users") {
+          console.log(data);
+
           setUsers((prevUsers: any) => {
             const areEqual =
               JSON.stringify(prevUsers) === JSON.stringify(data.players);
