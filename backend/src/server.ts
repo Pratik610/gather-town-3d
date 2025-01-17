@@ -18,11 +18,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:4173",
-      "https://gather-town-3d.vercel.app",
-    ],
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Explicitly allow methods
   })
 );
@@ -98,6 +94,10 @@ function handleJoinWorkspace(
     const room = rooms.get(userMessage.workspaceId);
     if (!room?.users.includes(userMessage.userDetails.id)) {
       room!.users.push(userMessage.userDetails.id);
+
+      console.log(room?.users);
+
+      rooms.set(userMessage.workspaceId, { users: room!.users });
     }
   }
 
